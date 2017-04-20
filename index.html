@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crystal Collector</title>
+  
+  <style type="text/css">
+
+    .crystal-image {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+
+</head>
+<body>
+
+  <h1>CrystalsCollector!</h1>
+  <h2><span id="number-to-guess"></span></h2>
+  <h3>You will be given a random number at the start of the game.\n There are four crystals below. By clicking on a crystal you will add a specific amount of points to your total score. You will the game by matching your total score to random number, you lose the game if your total score goes above the random number. The value of each crystal is hidden from you until you click on it. Each time when the game starts, the game will change the values of each crystal.</h3>
+
+  <h2> Your total score is: <span id = "displaycounter"></span></h2>
+  <h2 id = "result"></h2>
+  <h2> Wins: <span id = "displaywins"></span></h2>
+  <h2> Losses: <span id = "displaylosses"></span></h2>
+
+  <div id="crystals"> <!-- images n text holder -->
+  </div>
+
+  <!-- Lets start JAVASCRIPT  -->
+ 
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+  <script type="text/javascript">
+
+  var targetArray = [51,60,33,102];
+  var targetNumber = targetArray[Math.floor(Math.random()*targetArray.length)];
+
+  $("#number-to-guess").text(targetNumber);
+
+  var counter = 0;
+
+
+  // 4 crystals images if i==0 --> first image to display and on..
+
+  // an Array for our 4 crystal.
+  var numberOptions = [10, 5, 3, 7];
+
+  // Next we create a for loop to create crystals.
+  for (var i = 0; i < numberOptions.length; i++) {
+
+    // For each iteration, we will create an imageCrystal
+    var imageCrystal = $("<img>");
+
+    // First each crystal will be given the class ".crystal-image".
+     imageCrystal.addClass("crystal-image");
+
+    // given a src path to each crystal image
+            if(i==0){
+              imageCrystal.attr("src", "assets/images/navgrah.jpg");
+            }
+
+            else if (i==1){
+              imageCrystal.attr("src","assets/images/red.jpg");
+            }
+
+            else if (i==2){
+              imageCrystal.attr("src","assets/images/white.jpg");
+            }
+
+            else if (i==3){
+              imageCrystal.attr("src","assets/images/yellow.jpg");
+            }
+
+    // Egive a data attribute to each crystal and depending on numberOptions array index.
+    imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+
+    // to display image to user
+    $("#crystals").append(imageCrystal);
+  }
+
+  // This time, our click event applies to every single crystal on the page. Not just one.
+  $(".crystal-image").on("click", function() {
+
+    
+    var crystalValue = ($(this).attr("data-crystalvalue"));
+    crystalValue = parseInt(crystalValue);
+    counter += crystalValue;
+
+    // win-lose logic started
+
+    counter += counter;
+    $("#displaycounter").text(counter); 
+
+  var wins = 0;
+  var losses = 0;
+  
+    if (counter === targetNumber) {
+        wins = wins + 1;
+        console.log(wins);
+        $("#result").html("You win!");
+       }
+
+    else if (counter >= targetNumber) {
+            losses = losses + 1;
+            console.log(losses);
+            $("#result").html("You loss!");
+                   
+    }
+
+    $("#displaywins").text(wins);
+    $("#displaylosses").text(losses);
+
+  });
+
+  </script>
+</body>
+</html>
